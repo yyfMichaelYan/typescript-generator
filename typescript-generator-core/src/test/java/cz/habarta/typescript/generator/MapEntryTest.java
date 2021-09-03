@@ -73,7 +73,8 @@ public class MapEntryTest {
                 + "  'entry3': {\n"
                 + "    'MyBean instance': 'EEE'\n"
                 + "  }\n"
-                + "}").replace("'", "\"");
+                + "}")
+                .replace("'", "\"");
 
         Assert.assertEquals(expectedJson, json);
 
@@ -117,10 +118,6 @@ public class MapEntryTest {
                 + "  }\n"
                 + "}")
                 .replace("'", "\"");
-	System.out.println("actual json");
-	System.out.println(json);
-	System.out.println("expected json");
-	System.out.println(expectedJson);
 	Assert.assertTrue(json.contains(("'name': 'ClassWithEntries'").replace("'", "\"")));
 	Assert.assertTrue(json.contains(("'entry1': {\n    'key': {\n      'f0': 'nnn',\n      'f1': true\n    },\n    'value': 'NNN'\n  }").replace("'", "\"")) || json.contains(("'entry1': {\n    'key': {\n      'f1': true,\n      'f0': 'nnn'\n    },\n    'value': 'NNN'\n  }").replace("'", "\"")) || json.contains(("'entry1': {\n    'value': 'NNN',\n    'key': {\n      'f0': 'nnn',\n      'f1': true\n    }\n  }").replace("'", "\"")) || json.contains(("'entry1': {\n    'value': 'NNN',\n    'key': {\n      'f1': true,\n      'f0': 'nnn'\n    }\n  }").replace("'", "\"")));
 	Assert.assertTrue(json.contains(("'entry2': {\n    'MyBean instance': 'OOO'\n  }").replace("'", "\"")));
@@ -137,7 +134,7 @@ public class MapEntryTest {
         final String output = new TypeScriptGenerator(settings).generateTypeScript(Input.from(ClassWithEntries.class));
         Assert.assertTrue(output.contains("entry1: Entry1<MyBean, string>"));
         Assert.assertTrue(output.contains("entry2: { [index: string]: string }"));
-	Assert.assertTrue(output.contains("interface Entry1<K, V> {\n    key: K;\n    value: V;\n}") || output.contains("interface Entry1<K, V> {\n    value: V;\n    key: K;\n}"));
+        Assert.assertTrue(output.contains("interface Entry1<K, V> {\n    key: K;\n    value: V;\n}") || output.contains("interface Entry1<K, V> {\n    value: V;\n    key: K;\n}"));
         Assert.assertTrue(output.contains("entry3: { [index: string]: string }"));
     }
 
